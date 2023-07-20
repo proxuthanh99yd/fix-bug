@@ -1,6 +1,10 @@
-import React, { Component } from 'react'
-
+import { Component } from "react";
+import PropTypes from "prop-types";
 export default class UserForm extends Component {
+    static propTypes = {
+        users: PropTypes.any,
+        saveUser: PropTypes.func,
+    };
     constructor() {
         super();
         this.state = {
@@ -8,24 +12,25 @@ export default class UserForm extends Component {
             username: "",
             email: "",
         };
-    };
+    }
 
     handleInputChange = (event) => {
         const { name, value } = event.target;
         this.setState({
+            id: Math.random(),
             [name]: value,
         });
     };
-    
+
     handleSubmit = (event) => {
         event.preventDefault();
-        
-        const {id, username, email} = this.state;
+
+        const { username, email } = this.state;
         if (!username || !email) return;
         this.props.saveUser(this.state);
-        
+
         this.setState({
-            id: null,
+            id: "",
             username: "",
             email: "",
         });
@@ -34,32 +39,34 @@ export default class UserForm extends Component {
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <div className='mb-3'>
+                <div className="mb-3">
                     <label htmlFor="username">Username:</label>
                     <input
                         type="text"
-                        className='form-control'
-                        placeholder='enter your username...'
+                        className="form-control"
+                        placeholder="enter your username..."
                         name="username"
                         id="username"
                         value={this.state.username}
-                        onChange={this.handleInputChange} />
+                        onChange={this.handleInputChange}
+                    />
                 </div>
-                <div className='mb-3'>
+                <div className="mb-3">
                     <label htmlFor="email">Email:</label>
                     <input
                         type="text"
-                        className='form-control'
-                        placeholder='enter your email address...'
+                        className="form-control"
+                        placeholder="enter your email address..."
                         name="email"
-                        id="email" 
+                        id="email"
                         value={this.state.email}
-                        onChange={this.handleInputChange}/>
+                        onChange={this.handleInputChange}
+                    />
                 </div>
-                <button type="submit"
-                    className='btn btn-primary'
-                >Save</button>
+                <button type="submit" className="btn btn-primary">
+                    Save
+                </button>
             </form>
-        )
+        );
     }
 }
